@@ -55,6 +55,7 @@ export interface IYidengOptions {
 }
 
 export interface IAnalyticsTrackerOptions {
+    time?:string;
     module?:string;
     metricName: string;  //指标名称
     data: IYidengData;

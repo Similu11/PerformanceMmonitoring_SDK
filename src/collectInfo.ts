@@ -25,8 +25,6 @@ export default class collectInfo {
     constructor(options: IYidengOptions = { permaceUrl: '', rrwebUrl: '', module: "" }) {
         // 扩展基础配置
         const logUrl = options.logUrl; //数据上报服务地址
-        const rrwebUrl = options.rrwebUrl;
-        const permaceUrl = options.rrwebUrl;
         if (!logUrl) {
             throw new Error(`小石头系统监控平台${this.v}提示未传递上报服务地址`);
         }

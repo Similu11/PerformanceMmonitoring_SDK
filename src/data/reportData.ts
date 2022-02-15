@@ -27,23 +27,24 @@ class ReportData implements IReportData {
             if (!!W.fetch) {
                 fetch(logurl, {
                     headers: {
-                        'module': config.module.toString()
-                    }, body: body.toString(), method: 'POST', keepalive: true
+                        'module': config.module.toString(),
+                    }, body:JSON.stringify(body), method: 'POST'//,keepalive: true
                 }); // fetch方法优先级最高
             } else {
                 let xhr: XMLHttpRequest | null = new XMLHttpRequest();
                 // 设置请求头
-                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.open("post",logurl);
+                // xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.setRequestHeader('module', config.module.toString());
-                xhr.send(body.toString()); // 发送参数
+                xhr.send(JSON.stringify(body)); // 发送参数
                 xhr.onload = function (e) {
                     //及时清理以防多次创建
                     xhr = null;
-                }
+               }
             }
         } else if (level == AskPriority.IDLE) {
             if (!!WN.sendBeacon) {
-                navigator.sendBeacon(logurl, body.toString()); //sendBeacon()方法会使用户代理在有机会时异步地向服务器发送数据，同时不会延迟页面的卸载或影响下一导航的载入性能
+                navigator.sendBeacon(logurl, JSON.stringify(body)); //sendBeacon()方法会使用户代理在有机会时异步地向服务器发送数据，同时不会延迟页面的卸载或影响下一导航的载入性能
             } else {
                 let img: HTMLImageElement | null = new Image();
                 img.src = `${logurl}?body=${body}`;
@@ -53,5 +54,7 @@ class ReportData implements IReportData {
             }
         }
     }
+
+    
 }
 export default ReportData;

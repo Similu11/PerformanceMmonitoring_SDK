@@ -27,6 +27,7 @@ export interface IYidengOptions {
     module?: string;
 }
 export interface IAnalyticsTrackerOptions {
+    time?: string;
     module?: string;
     metricName: string;
     data: IYidengData;

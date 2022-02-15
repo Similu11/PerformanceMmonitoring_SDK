@@ -7,7 +7,7 @@ export const config: IYidengConfig = {
     isResourceTiming: false,
     isElementTiming: false,
     maxTime: 15000,
-    isRrweb:true,
+    isRrweb:false,
     rrwebUrl:"",
     permaceUrl:"",
     module:''

@@ -3,6 +3,7 @@ import { W } from '../data/constants';
 //rrweb在这里引入
 import { record, pack } from 'rrweb';
 import { AskPriority } from '../typings/types';
+import dayjs from "dayjs";
 type ErrorInfo = {};
 
 class ErrorTrace {
@@ -21,26 +22,30 @@ class ErrorTrace {
             colno?: number,
             error?: Error
         ): boolean => {
-            const errorInfo = JSON.stringify({
+            const errorInfo = {
                 scriptURL,
                 lineno,
                 colno,
-                error,
-                module: config.module
-            });
+                message:error?.message,
+                stack:error?.stack,
+                module: config.module,
+                time:dayjs().format('YYYY-MM-DD hh:mm:ss')
+            };
             //通过错误信息还原sourcemap源文件地址
             config.reportData.sendToAnalytics(AskPriority.URGENT, errorInfo, config.logUrl);
-            const len = this.eventsMatrix.length;
-            let events = [];
-            if (len > 1) {
-                events = this.eventsMatrix[len - 2].concat(this.eventsMatrix[len - 1]);
-            } else {
-                events = this.eventsMatrix[0];
+            if (config.isRrweb) {
+                const len = this.eventsMatrix.length;
+                let events = [];
+                if (len > 1) {
+                    events = this.eventsMatrix[len - 2].concat(this.eventsMatrix[len - 1]);
+                } else {
+                    events = this.eventsMatrix[0];
+                }
+                const body = { events, module: config.module,time:dayjs().format('YYYY-MM-DD hh:mm:ss')};
+                config.reportData.sendToAnalytics(AskPriority.URGENT, body, config.rrwebUrl);
+                this.eventsMatrix = [[]];
+                this.recordPage();
             }
-            const body = JSON.stringify({ events, module: config.module });
-            config.reportData.sendToAnalytics(AskPriority.IDLE, body, config.rrwebUrl);
-            this.eventsMatrix = [[]];
-            this.recordPage();
             return true;
         }
     }

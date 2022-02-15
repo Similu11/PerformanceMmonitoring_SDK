@@ -10,7 +10,7 @@
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
-    "example:run": "parcel  src/index.html",
+    "example:run": "parcel  start/index.html",
     "api:init": "api-extractor init",
     "api:run": "api-extractor run --local --verbose",
     "api:doc": "typedoc --out docs src/collectInfo.ts"
@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@microsoft/api-extractor": "^7.19.4",
+    "dayjs": "^1.10.7",
     "microbundle": "^0.14.2",
     "rrweb": "^1.0.8",
     "typedoc": "^0.22.10",
